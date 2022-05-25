@@ -1,8 +1,8 @@
 {
-  "name": "nest-learning",
+  "name": "sandtea-api",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "santa",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

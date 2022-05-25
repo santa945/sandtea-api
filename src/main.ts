@@ -1,6 +1,7 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import middleware from './middleware/middleware';
+import { TransformInterceptor } from './interceptor/transform.interceptor';
 import { HttpExceptionFilter } from './filters/http.exception.filter';
 import { AuthGuard } from './guards/auth.guard';
 import { AuthService } from './app/auth/auth.service';
@@ -24,6 +25,12 @@ async function bootstrap() {
 
   // 全局注册【异常过滤器】，访问错误时返回固定格式，
   app.useGlobalFilters(new HttpExceptionFilter());
+  /**
+   * 全局拦截器
+   * TransformInterceptor: 访问成功时，将service返回的数据格式化成带retcode的指定格式
+   * */
+  app.useGlobalInterceptors(new TransformInterceptor());
+
 
   await app.listen(3000);
 }
