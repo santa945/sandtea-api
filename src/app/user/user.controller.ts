@@ -14,7 +14,6 @@ export class UserController {
   @Redirect()
   getDocs(@Query('keyword') keyword) {
     return {
-      redirect: true, //本来是不用加这个字段的，但是项目加上了全局拦截器TransformInterceptor，会将这个对象格式化
       url: `https://www.baidu.com/s?wd=${keyword}`,
       statusCode: 302
     }

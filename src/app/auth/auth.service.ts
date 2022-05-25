@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AuthService {
-  getXtfUid(): string {
-    return 'sandtea00001'
+  getXtfUid(): object {
+    return {
+      xtfUid: 'sandtea00001'
+    }
+
   }
 }

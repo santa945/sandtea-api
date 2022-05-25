@@ -6,7 +6,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
   @Get('getXtfUid')
-  getXtfUid(): string {
+  getXtfUid(): object {
     return this.authService.getXtfUid();
   }
 }
