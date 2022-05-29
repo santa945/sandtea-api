@@ -11,7 +11,7 @@ export class UserController {
   @Get('getUserInfo')
   getUserInfo(@Cookies('xtf-uid') cookies: string): Promise<UserEntity[]> {
     console.log('cookies', cookies);
-    return this.userService.send('SELECT * FROM user');
+    return this.userService.send('SELECT * FROM USERS');
   }
 
   @Get('list')
@@ -55,7 +55,7 @@ export class UserController {
     //删除多余逗号
     keys = keys.slice(0, -1)
     values = values.slice(0, -1)
-    const sql = `INSERT INTO USER(${keys}) VALUES(${values})`
+    const sql = `INSERT INTO USERS(${keys}) VALUES(${values})`
     return this.userService.send(sql);
 
   }

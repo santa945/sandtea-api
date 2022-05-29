@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 // 子模块
 import { UserModule } from './user/user.module'
 import { AuthModule } from './auth/auth.module'
+import { MemberModule } from './member/member.module'
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { AuthModule } from './auth/auth.module'
     }),
     // 加载子模块
     UserModule,
-    AuthModule
+    AuthModule,
+    MemberModule
   ],
   controllers: [],
   providers: [],
