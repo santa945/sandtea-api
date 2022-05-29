@@ -1,13 +1,23 @@
 import { Controller, Get, Post, Put, Delete, Query, Param, Body, Bind, Req, HttpCode, Header, Redirect, Headers, ParseIntPipe } from '@nestjs/common';
 import { UserService } from './user.service';
+import { UserEntity } from '../../entities/user.entity';
+// 自定义装饰器
+import { Cookies, Auth } from 'src/decorator/auth.decorator';
 
 @Controller()
 export class UserController {
   constructor(private readonly userService: UserService) { }
 
   @Get('getUserInfo')
-  getUserInfo(): object {
-    return this.userService.getUserInfo();
+  getUserInfo(@Cookies('xtf-uid') cookies: string): Promise<UserEntity[]> {
+    console.log('cookies', cookies);
+    return this.userService.send('SELECT * FROM user');
+  }
+
+  @Get('list')
+  @Auth('operator')
+  getList() {
+    return { name: 'xxx' }
   }
 
   @Get('docs')
@@ -35,7 +45,19 @@ export class UserController {
     console.log('query', query);
     console.log('params', params);
     console.log('headers', headers);
-    return null;
+    let keys = ''
+    let values = ''
+    for (let key in body) {
+      keys += key + ','
+      values += '"' + body[key] + '",'
+    }
+
+    //删除多余逗号
+    keys = keys.slice(0, -1)
+    values = values.slice(0, -1)
+    const sql = `INSERT INTO USER(${keys}) VALUES(${values})`
+    return this.userService.send(sql);
+
   }
 
   /**
@@ -43,18 +65,21 @@ export class UserController {
    * 加上了ParseIntPipe意味着这里的id一定要是number，否则请求失败
   */
   @Put('update/:id')
-  @Bind(Param('id', ParseIntPipe))
-  updateUserInfo(id: number) {
-    return {
-      name: '李四',
-      id: id,
-      updateTime: Date.now()
-    };
+  @Bind(Param('id', ParseIntPipe), Body())
+  updateUserInfo(id: number, body: object) {
+    let str = ''
+    for (let key in body) {
+      str += key + '="' + body[key] + '",'
+    }
+    str = str.slice(0, -1);
+    let sql = `UPDATE USER SET ${str} WHERE user_id="${id}"`
+    return this.userService.send(sql);
   }
 
   @Delete('del/:id')
   @Bind(Param('id', ParseIntPipe))
   deleteUserById(id: number) {
-    return null;
+    let sql = `DELETE FROM USER WHERE user_id="${id}"`
+    return this.userService.send(sql);
   }
 }
