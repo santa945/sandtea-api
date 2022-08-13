@@ -12,7 +12,8 @@ export class MemberService {
 
   // 获取所有用户数据列表(memberRepository.query()方法属于typeoram)
   async send(sql: string): Promise<MemberEntity[]> {
-    return await this.memberRepository.query(sql);
+    const res = await this.memberRepository.query(sql);
+    return res[0];
   }
 
 }

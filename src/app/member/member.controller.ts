@@ -37,8 +37,13 @@ export class MemberController {
     * /member/getMemberInfo 
     */
   @Get('/member/getMemberInfo')
-  getMemberInfo(@Cookies('xtf-uid') cookies: string): Promise<MemberEntity[]> {
-    return this.memberService.send('SELECT * FROM member_list');
+  @Bind(Body(), Query(), Param())
+  getMemberInfo(body: any, query: any, params: any, @Cookies('xtf-uid') cookies: string): Promise<MemberEntity[]> {
+    console.log('body', body);
+    console.log('query', query);
+    console.log('params', params);
+
+    return this.memberService.send(`SELECT * FROM member_list WHERE memberId="${query.memberId}"`);
   }
 
 }
